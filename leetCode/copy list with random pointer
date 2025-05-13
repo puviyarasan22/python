@@ -1,0 +1,29 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x, next=None, random=None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+        # hashmap: step 1: build all the nodes(val); because the next/random nodes are not generated yet
+        #          step 2: connect the next and random lines
+        hashmap = {None:None}  # some next/random is {None:None}
+        cur = head
+        while cur:  # build -> {cur: Node()}
+            hashmap[cur] = Node(cur.val) # only val, without connection
+            cur = cur.next
+        cur = head
+        while cur:  # connect all new nodes
+            new_node = hashmap[cur]
+            new_node.next = hashmap[cur.next]  # connect to copyed/built next new node
+            new_node.random = hashmap[cur.random]
+            cur = cur.next
+        return hashmap[head]
